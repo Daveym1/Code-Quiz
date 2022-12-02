@@ -1,5 +1,5 @@
 var button = document.getElementById("start");
-var timer = document.getElementById("time")
+var timerCount = document.getElementById("time")
 // Pseudo Code
 
 //Create a code quiz that contains the following requirements:
@@ -10,8 +10,18 @@ var timer = document.getElementById("time")
         // 1. When clicked the timer starts.
 
 button.addEventListener("click", function(){
-    timer.innerHTML = 60;
+    timerCount.innerHTML = 10;
+    var countdown = setInterval(function(){
+        timerCount.innerHTML--;
+
+        if (timerCount.innerHTML == 0){
+            console.log("Time's up");
+            clearInterval(countdown);
+        }
+    }, 1000)
+
 })
+
 
         // 2. The first question is displayed.
 
