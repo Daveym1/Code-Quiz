@@ -23,7 +23,9 @@ button.addEventListener("click", function(){
 })
 
 
-        // 2. The first question is displayed.
+        // 2. The first question is displayed. and #start-screen is hidden
+
+        
 
 // Questions contain buttons for each answer.
 
