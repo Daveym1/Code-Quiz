@@ -1,5 +1,9 @@
 var button = document.getElementById("start");
-var timerCount = document.getElementById("time")
+var timerCount = document.getElementById("time");
+var questionContainer = document.getElementById("questions")
+var questionDiv = document.getElementById("question-title");
+var question = localStorage.setItem("questions", JSON.stringify(questions));
+var startScreen = document.getElementById("start-screen");
 // Pseudo Code
 
 //Create a code quiz that contains the following requirements:
@@ -20,12 +24,18 @@ button.addEventListener("click", function(){
         }
     }, 1000)
 
+startScreen.classList.add("hide");
+document.getElementById("question-title").classList.remove("hide");
+
 })
+
+console.log(question);
 
 
         // 2. The first question is displayed. and #start-screen is hidden
 
-        
+
+
 
 // Questions contain buttons for each answer.
 
