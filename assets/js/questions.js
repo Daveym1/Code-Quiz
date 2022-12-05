@@ -52,8 +52,8 @@ var questions = [
     {
         Title: "Question 8",
         Question: "How long is the border between the United States and Canada?",
-        Choices: ["3525", "4525", "5525", "6525"],
-        Answer: "5525"
+        Choices: ["3525 miles", "4525 miles", "5525 miles", "6525 miles"],
+        Answer: "5525 miles"
     },
 
     {

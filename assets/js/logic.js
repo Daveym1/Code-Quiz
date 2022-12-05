@@ -4,12 +4,19 @@ var questionContainer = document.getElementById("questions")
 var questionDiv = document.getElementById("question-title");
 var question = localStorage.setItem("questions", JSON.stringify(questions));
 var startScreen = document.getElementById("start-screen");
+var endScreen = document.getElementById("end-screen");
 var choices = document.getElementById("choices");
 var questionIndex = 0;
 var userChoices = questions[questionIndex].Choices;
-
-    var choicesList = document.createElement("ol");
-    var listItems = document.createElement("li");
+var countdown = 0;
+var currentTime = timerCount;
+var seconds = 60;
+var finalScore = document.getElementById("final-score");
+var feedback = document.getElementById("feedback");
+var choicesList = document.createElement("ol");
+var listItems = document.createElement("li");
+var correctAudio = new Audio("assets/sfx/correct.wav");
+var incorrectAudio = new Audio("assets/sfx/incorrect.wav");
 
 // Pseudo Code
 
@@ -21,7 +28,7 @@ var userChoices = questions[questionIndex].Choices;
         // 1. When clicked the timer starts.
 
 button.addEventListener("click", function(){
-    timerCount.innerHTML = 60;
+    timerCount.innerHTML = seconds;
     var countdown = setInterval(function(){
         timerCount.innerHTML--;
 
@@ -29,9 +36,9 @@ button.addEventListener("click", function(){
             console.log("Time's up");
             clearInterval(countdown);
         }
-    renderQuestions(questionIndex);
+        renderQuestions(questionIndex);
     }, 1000)
-
+    
     startScreen.classList.add("hide");
     document.getElementById("question-title").classList.remove("hide");
     questionContainer.classList.remove("hide");
@@ -42,21 +49,17 @@ button.addEventListener("click", function(){
 
 function renderQuestions(questionIndex){
 
+    questionDiv.innerHTML = "";
+
 for (i = 0; i < questions.length; i++){
-    questionDiv.textContent = questions[0].Question;
+    questionDiv.textContent = questions[questionIndex].Question;
     var userChoices = questions[questionIndex].Choices;
 
     var choicesList = document.createElement("ol");
     
     
-    // function createListItems() {
-    //     // var listItems = document.createElement("li");
-    //     // var btn = document.createElement("button");
-    //     btn.textContent = userChoices;
-    //     return listItems, btn;
-    // }
-    
     // Questions contain buttons for each answer.
+
     userChoices.forEach(function (newItem) {
         var listItems = document.createElement("button");
         listItems.textContent = newItem;
@@ -77,23 +80,44 @@ function compare(event){
        
         // Correct condition 
         if (element.textContent == questions[questionIndex].Answer) {
-            console.log("correct");
-             // Correct condition 
+            feedback.innerHTML = "Correct";
+            correctAudio.play();
+        }else{
+            timerCount.innerHTML -= 5;
+            feedback.innerHTML = "Incorrect";
+            incorrectAudio.play();
+            
+        }
+            
              questionIndex++;
+
+             // correct/incorrect feedback
+
+            feedback.setAttribute("class", "feedback");
+            setTimeout(function() {
+            feedback.setAttribute("class", "feedback hide");
+            }, 500);
+             
+
+        if (questionIndex >= questions.length){
+            clearInterval(countdown);
+            endQuiz();
+        }
         } 
-
     }
+    
+
+    function endQuiz(){
+        console.log("Score: " + timerCount);
+        startScreen.classList.add("hide");
+        document.getElementById("question-title").classList.add("hide");
+        questionContainer.classList.add("hide");
+        endScreen.classList.remove("hide");
+        finalScore.innerHTML = timerCount;
+        console.log("The end");
     }
 
-
-
-
-
-
-
-
-
-choices.appendChild(choicesList);
+// choices.appendChild(choicesList);
 // choicesList.appendChild(createListItems());
 // choicesList.appendChild(createListItems());
 // choicesList.appendChild(createListItems());
