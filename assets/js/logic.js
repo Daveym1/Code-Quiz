@@ -1,48 +1,22 @@
+//DOM Elements
 var button = document.getElementById("start");
-var timerCount = document.getElementById("time");
-var questionContainer = document.getElementById("questions")
+var timerElement = document.getElementById("time");
+var questionContainer = document.getElementById("questions");
 var questionDiv = document.getElementById("question-title");
-var question = localStorage.setItem("questions", JSON.stringify(questions));
 var startScreen = document.getElementById("start-screen");
 var endScreen = document.getElementById("end-screen");
 var choices = document.getElementById("choices");
-var questionIndex = 0;
-var userChoices = questions[questionIndex].Choices;
-var countdown = 0;
-var currentTime = timerCount;
-var seconds = 60;
 var finalScore = document.getElementById("final-score");
 var feedback = document.getElementById("feedback");
+//Created elements
 var choicesList = document.createElement("ol");
 var listItems = document.createElement("li");
-var correctAudio = new Audio("assets/sfx/correct.wav");
-var incorrectAudio = new Audio("assets/sfx/incorrect.wav");
 
-// Pseudo Code
-
-//Create a code quiz that contains the following requirements:
-
-// A start button that when clicked a timer starts and the first question appears.
-
-    //Set up an event listener for the start button.
-        // 1. When clicked the timer starts.
-
-button.addEventListener("click", function(){
-    timerCount.innerHTML = seconds;
-    var countdown = setInterval(function(){
-        timerCount.innerHTML--;
-
-        if (timerCount.innerHTML == 0){
-            console.log("Time's up");
-            clearInterval(countdown);
-        }
-        renderQuestions(questionIndex);
-    }, 1000)
-    
-    startScreen.classList.add("hide");
-    document.getElementById("question-title").classList.remove("hide");
-    questionContainer.classList.remove("hide");
-})
+//Logic Variables
+var questionIndex = 0;
+var currentTime = seconds;
+var seconds ;
+var countdown;
 
 
 // 2. The first question is displayed. and #start-screen is hidden
@@ -50,13 +24,13 @@ button.addEventListener("click", function(){
 function renderQuestions(questionIndex){
 
     questionDiv.innerHTML = "";
+    userChoices = "";
 
-for (i = 0; i < questions.length; i++){
-    questionDiv.textContent = questions[questionIndex].Question;
+for (var i = 0; i < questions.length; i++){
+    questionDiv.innerHTML = questions[questionIndex].Question;
     var userChoices = questions[questionIndex].Choices;
 
     var choicesList = document.createElement("ol");
-    
     
     // Questions contain buttons for each answer.
 
@@ -71,6 +45,39 @@ for (i = 0; i < questions.length; i++){
 }
 }
 
+//Set up an event listener for the start button.
+// 1. When clicked the timer starts.
+
+button.addEventListener("click", function(){
+    
+    startScreen.classList.add("hide");
+    document.getElementById("question-title").classList.remove("hide");
+    questionContainer.classList.remove("hide");
+    seconds = 60
+    
+    startTimer();
+})
+
+function startTimer(){
+
+    // var seconds = 60;
+
+     var countdown = setInterval(function(){
+        
+        timerElement.textContent = seconds;
+        seconds--;
+        
+        if (seconds < 0){
+            clearInterval(countdown);
+            console.log("Time's up");
+            clearInterval(countdown);
+        }
+        renderQuestions(questionIndex);
+    }, 1000)
+}
+
+
+
 // function to compare answer with options
 
 function compare(event){
@@ -81,41 +88,40 @@ function compare(event){
         // Correct condition 
         if (element.textContent == questions[questionIndex].Answer) {
             feedback.innerHTML = "Correct";
-            correctAudio.play();
         }else{
-            timerCount.innerHTML -= 5;
+            seconds -= 5;
             feedback.innerHTML = "Incorrect";
-            incorrectAudio.play();
-            
         }
-            
-             questionIndex++;
+        
+        questionIndex++;
+    
 
-             // correct/incorrect feedback
+     // correct/incorrect feedback
 
-            feedback.setAttribute("class", "feedback");
-            setTimeout(function() {
-            feedback.setAttribute("class", "feedback hide");
-            }, 500);
+    feedback.setAttribute("class", "feedback");
+    setTimeout(function() {
+    feedback.setAttribute("class", "feedback hide");
+    }, 500);
              
 
         if (questionIndex >= questions.length){
-            clearInterval(countdown);
             endQuiz();
+            
         }
         } 
     }
     
 
     function endQuiz(){
-        console.log("Score: " + timerCount);
+        clearInterval(countdown);
+        console.log("Score: " + seconds);
         startScreen.classList.add("hide");
         document.getElementById("question-title").classList.add("hide");
         questionContainer.classList.add("hide");
         endScreen.classList.remove("hide");
-        finalScore.innerHTML = timerCount;
+        finalScore.innerHTML = seconds;
         console.log("The end");
-    }
+}
 
 // choices.appendChild(choicesList);
 // choicesList.appendChild(createListItems());
